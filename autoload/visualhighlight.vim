@@ -14,7 +14,7 @@ export def Disable(): void
 enddef
 
 def MatchAdd(): void
-  var [b, e] = sort([getpos('v')[1 : 2], getpos('.')[1 : 2]], 'LexComp')
+  var [b, e] = sort([getcharpos('v')[1 : 2], getcharpos('.')[1 : 2]], 'LexComp')
   var str = getline(b[0], e[0])->join('\n')[b[1] - 1 : e[1] - getline(e[0])->strchars() - 1]
   var ic = &ignorecase ? '\c' : '\C'
   try
