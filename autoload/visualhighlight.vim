@@ -22,7 +22,9 @@ def MatchAdd(): void
     call matchdelete(g:visualhighlight_id)
   catch
   endtry
-  call matchadd('VisualHighlightGroup', nomagic .. ic .. str, 0, g:visualhighlight_id)
+  if !str->empty()
+    call matchadd('VisualHighlightGroup', nomagic .. ic .. str, 0, g:visualhighlight_id)
+  endif
 enddef
 
 def LexComp(a: list<number>, b: list<number>): number
