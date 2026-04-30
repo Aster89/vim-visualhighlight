@@ -22,7 +22,7 @@ def MatchAdd(): void
   const ee = e[1] - getline(e[0])->strchars() - 1
   const str = getline(b[0], e[0])
     \ ->join(' ')[b[1] - 1 : ee]
-    \ ->substitute('\_s\+', '\\m\\_s*\\V', 'g')
+    \ ->substitute('\_s\+', '\\_s\\+', 'g')
   if ee != 0
     const ic = &ignorecase ? '\c' : '\C'
     call matchadd('VisualHighlightGroup', '\V' .. ic .. str, 0, g:visualhighlight_id)
