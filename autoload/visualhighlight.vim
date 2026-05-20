@@ -20,14 +20,17 @@ def MatchAdd(): void
   endtry
   const [b, e] = sort([getcharpos('v')[1 : 2], getcharpos('.')[1 : 2]], 'LexComp')
   const ee = e[1] - getline(e[0])->strchars() - 1
-  const str = getline(b[0], e[0])
-    \ ->join(' ')[b[1] - 1 : ee]
-    \ ->substitute('\\', '\\\\', 'g')
-    \ ->substitute('\_s\+', '\\_s\\+', 'g')
-  if ee != 0
-    const ic = &ignorecase ? '\c' : '\C'
-    call matchadd('VisualHighlightGroup', '\V' .. ic .. str, 0, g:visualhighlight_id)
+  if ee == 0
+    return
   endif
+  const lines = getline(b[0], e[0])
+  var str = lines->join(' ')[b[1] - 1 : ee]
+  if lines->len() != 1 || str->match('^\s\+$') != 0
+    str = str ->substitute('\\', '\\\\', 'g')
+            \ ->substitute('\_s\+', '\\_s\\+', 'g')
+  endif
+  const ic = &ignorecase ? '\c' : '\C'
+  call matchadd('VisualHighlightGroup', '\V' .. ic .. str, 0, g:visualhighlight_id)
 enddef
 
 def LexComp(a: list<number>, b: list<number>): number
