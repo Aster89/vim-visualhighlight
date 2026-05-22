@@ -10,14 +10,19 @@ enddef
 export def Disable(): void
   augroup VisualHighlightImpl | autocmd!
   augroup END
-  call matchdelete(g:visualhighlight_id)
+  call MatchDel()
+enddef
+
+var visualhighlight_win_ids = []
+var visualhighlight_match_ids = []
+
+def MatchDel()
+  visualhighlight_win_ids->map((k, wid) => matchdelete(visualhighlight_match_ids[k], wid))
+  visualhighlight_win_ids = []
 enddef
 
 def MatchAdd(): void
-  try
-    call matchdelete(g:visualhighlight_id)
-  catch
-  endtry
+  call MatchDel()
   const [b, e] = sort([getcharpos('v')[1 : 2], getcharpos('.')[1 : 2]], 'LexComp')
   const ee = e[1] - getline(e[0])->strchars() - 1
   if ee == 0
@@ -30,7 +35,11 @@ def MatchAdd(): void
             \ ->substitute('\_s\+', '\\_s\\+', 'g')
   endif
   const ic = &ignorecase ? '\c' : '\C'
-  call matchadd('VisualHighlightGroup', '\V' .. ic .. str, 0, g:visualhighlight_id)
+  str = '\V' .. ic .. str
+  visualhighlight_win_ids = getwininfo()->filter((_, wi) => wi.tabnr == tabpagenr())
+                                      \ ->map((_, wi) => wi.winid)
+  visualhighlight_match_ids = visualhighlight_win_ids
+        \ ->mapnew((_, wid) => matchadd('VisualHighlightGroup', str, 0, -1, { 'window': wid }))
 enddef
 
 def LexComp(a: list<number>, b: list<number>): number
