@@ -25,11 +25,8 @@ def MatchAdd(): void
   call MatchDel()
   const [b, e] = sort([getcharpos('v')[1 : 2], getcharpos('.')[1 : 2]], 'LexComp')
   const ee = e[1] - getline(e[0])->strchars() - 1
-  if ee == 0
-    return
-  endif
   const lines = getline(b[0], e[0])
-  var str = lines->join(' ')[b[1] - 1 : ee]
+  var str = lines->join(' ')[b[1] - 1 : min([-1, ee])] .. (ee == 0 ? "\n" : "")
   if lines->len() != 1 || str->match('^\s\+$') != 0
     str = str ->substitute('\\', '\\\\', 'g')
             \ ->substitute('\_s\+', '\\_s\\+', 'g')
