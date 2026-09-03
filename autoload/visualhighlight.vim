@@ -29,7 +29,7 @@ def MatchAdd(): void
   var str = lines->join(' ')[b[1] - 1 : min([-1, ee])] .. (ee == 0 ? "\n" : "")
   if lines->len() != 1 || str->match('^\s\+$') != 0
     str = str ->substitute('\\', '\\\\', 'g')
-            \ ->substitute('\(\(\k\| \|\t\)\@!\_.\zs\_s*\ze\(\k\| \|\t\)\@!\_.\|\k\zs\_s*\ze\(\k\| \|\t\)\@!\_.\|\(\k\| \|\t\)\@!\_.\zs\_s*\ze\k\)', '\\_s\\*', 'g')
+            \ ->substitute('\(\(\k\| \|\t\|\\\)\@!\_.\zs\_s*\ze\(\k\| \|\t\)\@!\_.\|\k\zs\_s*\ze\(\k\| \|\t\)\@!\_.\|\(\k\| \|\t\|\\\)\@!\_.\zs\_s*\ze\k\)', '\\_s\\*', 'g')
             \ ->substitute('\k\zs\_s\+\ze\k', '\\_s\\+', 'g')
             \ ->substitute('\(\k\| \|\t\)\@<!\_s\+$', '\\_s\\*', '')
             \ ->substitute('^\_s\+\(\k\| \|\t\)\@!', '\\_s\\*', '')
